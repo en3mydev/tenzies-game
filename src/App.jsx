@@ -6,6 +6,7 @@ import Intro from "./Intro"
 
 export default function App() {
 
+    const [timerStarted, setTimerStarted] = React.useState(false)
     const [time, setTime] = React.useState(0)
     const [isPlaying, setIsPlaying] = React.useState(false)
     const [count, setCount] = React.useState(0)
@@ -54,11 +55,11 @@ export default function App() {
 
     React.useEffect(() => {
         let intervalId;
-        if(isPlaying) {
-            intervalId = setInterval(() => setTime(time + 1), 10)
+        if(isPlaying && timerStarted) {
+            intervalId = setInterval(() => setTime(time => time + 1), 10)
         }
         return () => clearInterval(intervalId)
-    }, [isPlaying, time])
+    }, [isPlaying, timerStarted])
 
     const minutes = Math.floor((time % 360000) / 6000)
     const seconds = Math.floor((time % 6000) / 100)
@@ -125,8 +126,8 @@ export default function App() {
     function startGame() {
         setIntroState(false);
         setIsPlaying(true);
+        setTimerStarted(true)
     }
-
 
     return (
         <section className="sect">
